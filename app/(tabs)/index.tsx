@@ -1,3 +1,4 @@
+import MovieCard from "@/components/MovieCard";
 import SearchBar from "@/components/SearchBar";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
@@ -48,7 +49,7 @@ export default function Index() {
             />
             <>
               <Text className="text-lg text-white mt-5 mb-3">
- Latest Movies
+                Latest Movies
               </Text>
 
               <FlatList
@@ -63,9 +64,7 @@ export default function Index() {
                 }}
                 className="mt-2 pb-32"
                 scrollEnabled={false}
-                renderItem={({ item }) => (
-                  <Text className="text-white text-sm">{item.title}</Text>
-                )}
+                renderItem={({ item }) => <MovieCard item={item} />}
               />
             </>
           </View>
