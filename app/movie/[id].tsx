@@ -4,7 +4,7 @@ import React from 'react'
 export default function MovieDetail() {
   return (
     <View>
-      <Text>[id]</Text>
+      <Text>id</Text>
     </View>
   )
 }

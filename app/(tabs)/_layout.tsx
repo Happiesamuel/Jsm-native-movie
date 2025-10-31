@@ -18,7 +18,7 @@ function TabIcons({ focused, title, icon }: any) {
       </ImageBackground>
     );
 
-  return (
+  return ( 
     <View className="size-full justify-center items-center mt-4 rounded-full">
       <Image source={icon} tintColor="#a8b5db" className="size-5" />
     </View>
@@ -37,7 +37,7 @@ export default function Layout() {
           alignItems: "center",
         },
         tabBarStyle: {
-            backgroundColor: "#0f0d23",
+          backgroundColor: "#0f0d23",
           borderRadius: 50,
           marginHorizontal: 20,
           marginBottom: 36,
@@ -45,7 +45,7 @@ export default function Layout() {
           position: "absolute",
           overflow: "hidden",
           borderWidth: 1,
-          borderColor: "0f0d23",
+          borderColor: "#0f0d23",
         },
       }}
     >
