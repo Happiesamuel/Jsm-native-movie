@@ -4,9 +4,8 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function MovieCard({ item }: { item: Movie }) {
-  console.log(item.poster_path);
   return (
-    <Link href={`movies/${item.id.toString()}`} asChild>
+    <Link href={{ pathname: "/movie/[id]", params: { id: item.id } }} asChild>
       <TouchableOpacity className="w-[30%]">
         <Image
           source={{
@@ -17,7 +16,9 @@ export default function MovieCard({ item }: { item: Movie }) {
           className="w-full h-52 rounded-lg"
           resizeMode="cover"
         />
-        <Text className="text-white text-sm font-bold mt-2 " numberOfLines={1}>{item.title}</Text>
+        <Text className="text-white text-sm font-bold mt-2 " numberOfLines={1}>
+          {item.title}
+        </Text>
         <View className="flex-row items-center justify-start gap-x-1">
           <Image source={icons.star} className="size-4" />
           <Text className="text-xs text-white font-bold uppercase">
