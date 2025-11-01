@@ -9,6 +9,7 @@ const client = new Client()
 const database = new Databases(client);
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE!;
 const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTION!;
+
 export async function updateSearchCount(query: string, movie: Movie) {
   try {
     const res = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
@@ -37,5 +38,17 @@ export async function updateSearchCount(query: string, movie: Movie) {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+export async function getTrendingMovie(): Promise<TrendingMovie[] | undefined> {
+  try {
+    const res = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
+      Query.limit(5),
+      Query.orderDesc("count"),
+    ]);
+    return res.documents as unknown as TrendingMovie[];
+  } catch (error) {
+    console.log(error);
+    return undefined;
   }
 }

@@ -1,9 +1,11 @@
 import MovieCard from "@/components/MovieCard";
 import SearchBar from "@/components/SearchBar";
+import TrendingCard from "@/components/TrendingCard";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import useFetch from "@/hooks/useFetch";
 import { fetchMovies } from "@/services/api";
+import { getTrendingMovie } from "@/services/appwrite";
 import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
@@ -16,6 +18,11 @@ import {
 
 export default function Index() {
   const router = useRouter();
+  const {
+    data: trendingMovies,
+    loading: trendingLoading,
+    error: trendingError,
+  } = useFetch(() => getTrendingMovie());
   const {
     data: movies,
     loading: moviesLoading,
@@ -33,20 +40,44 @@ export default function Index() {
         }}
       >
         <Image source={icons.logo} className=" w-12 h-10 mt-20 mb-5 mx-auto" />
-        {moviesLoading ? (
+        {moviesLoading || trendingLoading ? (
           <ActivityIndicator
             size="large"
             color="0000ff"
             className="mt-10 self-center"
           />
-        ) : MoviesError ? (
-          <Text className="text-white text-sm">{MoviesError?.message}</Text>
+        ) : MoviesError || trendingError ? (
+          <Text className="text-white text-sm">
+            {MoviesError?.message || trendingError?.message}
+          </Text>
         ) : (
           <View className="mt-5 bg-red-4 flex-1">
             <SearchBar
               onPress={() => router.push("/search")}
               placeholder="Search for a movie"
             />
+
+            {trendingMovies && (
+              <View className="mt-10">
+                <Text className="text-lg text-white font-bold mb-3">
+                  Trending Movies
+                </Text>
+
+                <FlatList
+                  data={trendingMovies}
+                  keyExtractor={(item) => item.movie_id.toString()}
+                  className="mt-3 mb-4 "
+                  horizontal={true}
+                  scrollEnabled={true}
+                  renderItem={({ item, index }) => (
+                    <TrendingCard movie={item} index={index} />
+                  )}
+                  showsHorizontalScrollIndicator={false}
+                  ItemSeparatorComponent={() => <View className="w-4" />}
+                />
+              </View>
+            )}
+
             <>
               <Text className="text-lg text-white mt-5 mb-3">
                 Latest Movies

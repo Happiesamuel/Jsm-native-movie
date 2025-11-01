@@ -24,9 +24,6 @@ export default function Search() {
       async function func() {
         if (searchQuery.trim()) {
           await laodMovies();
-          if (movies?.length > 0 && movies?.at(0)) {
-            await updateSearchCount(searchQuery, movies.at(0));
-          }
         } else {
           reset();
         }
@@ -35,6 +32,18 @@ export default function Search() {
       return () => clearTimeout(timeoutId);
     },
     [searchQuery]
+  );
+
+  useEffect(
+    function () {
+      async function func() {
+        if (movies?.length > 0 && movies?.at(0)) {
+          await updateSearchCount(searchQuery, movies.at(0));
+        }
+      }
+      func();
+    },
+    [movies]
   );
   return (
     <SafeAreaView className="flex-1 bg-primary">
