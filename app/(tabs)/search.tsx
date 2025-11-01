@@ -4,8 +4,10 @@ import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import useFetch from "@/hooks/useFetch";
 import { fetchMovies } from "@/services/api";
+import { updateSearchCount } from "@/services/appwrite";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,17 +24,20 @@ export default function Search() {
       async function func() {
         if (searchQuery.trim()) {
           await laodMovies();
+          if (movies?.length > 0 && movies?.at(0)) {
+            await updateSearchCount(searchQuery, movies.at(0));
+          }
         } else {
           reset();
         }
       }
-      const timeoutId = setTimeout(func, 500);
+      const timeoutId = setTimeout(func, 1000);
       return () => clearTimeout(timeoutId);
     },
     [searchQuery]
   );
   return (
-    <View className="flex-1 bg-primary">
+    <SafeAreaView className="flex-1 bg-primary">
       <Image
         source={images.bg}
         className="absolute flex-1 w-full z-0"
@@ -55,7 +60,7 @@ export default function Search() {
           !moviesLoading && !MoviesError ? (
             <View className="mt-10 px-5">
               <Text className="text-gray-500 text-center">
-                {searchQuery.trim() ? "No movies found" : "Serch for a movie"}
+                {searchQuery.trim() ? "No movies found" : "Search for a movie"}
               </Text>
             </View>
           ) : null
@@ -97,6 +102,6 @@ export default function Search() {
           </>
         }
       />
-    </View>
+    </SafeAreaView>
   );
 }
