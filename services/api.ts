@@ -23,3 +23,25 @@ export async function fetchMovies({ query }: { query: string }) {
   const data = await res.json();
   return data.results;
 }
+
+export async function fetchMovieDetails(
+  movidId: string
+): Promise<MovieDetails> {
+  try {
+    const res = await fetch(
+      `${TMBD_CONFIG.BASE_URL}/movie/${movidId}?api_key=${TMBD_CONFIG.API_KEY}`,
+      {
+        method: "GET",
+        headers: TMBD_CONFIG.headers,
+      }
+    );
+
+    if (!res.ok)
+      throw new Error(`Failed to fetch movies details: ${res.statusText}`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
